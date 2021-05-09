@@ -1,7 +1,7 @@
 package com.market.makers.util;
 
 import com.ashish.marketdata.avro.Order;
-import com.market.makers.account.OrderStatus;
+import com.market.makers.portfolio.OrderStatus;
 import com.market.makers.service.PriceRange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +18,7 @@ public class OrderCreator {
     public static Order createSingleOrder(final String symbol, final String exchange, final String brokerName, final String brokerId, final String clientId, final String clientName){
         Order order = null;
         ThreadLocalRandom random = ThreadLocalRandom.current();
+        String orderId = "MARKET-MAKER"+ UUID.randomUUID().toString();
 
         PriceRange.Circuit circuit = priceRange.getTodaysSymbolCircuit(symbol);
         double price = circuit.getPriceRange();
@@ -39,7 +40,7 @@ public class OrderCreator {
                     .setFilledQuantity(0l)
                     .setRemainingQuantity(qty)
                     .setOrdertime(Calendar.getInstance().getTimeInMillis())
-                    .setOrderId(UUID.randomUUID().toString())
+                    .setOrderId(orderId)
                     .setClientName(clientName).build();
 
         } else {
