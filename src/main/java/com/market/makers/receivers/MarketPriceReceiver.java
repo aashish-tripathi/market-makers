@@ -1,10 +1,6 @@
 package com.market.makers.receivers;
 
-public class ExecutionReceiver implements  Runnable{
-
-
-
-
+public class MarketPriceReceiver implements Runnable{
     @Override
     public void run() {
 

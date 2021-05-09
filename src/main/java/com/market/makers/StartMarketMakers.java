@@ -37,17 +37,14 @@ public class StartMarketMakers {
         String brokerId = properties.getProperty("exsim.order.sim.brokerId");
         String[] clientDetails = clients[0].split("-");
         int workers = Integer.parseInt(properties.getProperty("exsim.order.sim.workers"));
-
         startMarketMakers(stocks, exchange, brokerName, brokerId, clientDetails, workers, new OrderService(serverUrl, orderTopic, kafkaAsCarrier));
-
     }
 
-
     private static void startMarketMakers(String[] stocks, String exchange, String brokerName, String brokerId, String[] clientDetails, int workers, OrderService orderService) throws JMSException {
-        orderService.start(stocks, exchange, brokerName, brokerId, clientDetails[0], clientDetails[1], workers, null);
-        LOGGER.info("Order Simulator has been started in automatic mode {}", Calendar.getInstance().getTime());
+        orderService.start(stocks, exchange, brokerName, brokerId, clientDetails[0], clientDetails[1], workers);
+        LOGGER.info("Market Makers has been started to create liquidity in market {}", exchange);
         Scanner scanner = new Scanner(System.in);
-        LOGGER.warn("Enter to stop automatic mode...");
+        LOGGER.warn("Enter to stop ...");
         String run = scanner.nextLine();
         while (run.isEmpty()) {
             LOGGER.warn("Turning down application...");
