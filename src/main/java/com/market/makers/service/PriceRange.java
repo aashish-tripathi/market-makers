@@ -22,7 +22,7 @@ public class PriceRange {
     public Circuit getTodaysSymbolCircuit(final String symbol){
      if(!stockCircuit.containsKey(symbol)){
          ThreadLocalRandom random = ThreadLocalRandom.current();
-         double price =  random.nextDouble(10, 100);
+         double price =  random.nextDouble(50, 500);
          price =Double.valueOf(Utility.dataFormat.format(price));
          stockCircuit.put(symbol, new Circuit(price, price-5,price+5));
      }

@@ -1,6 +1,7 @@
 package com.market.makers.util;
 
 import com.ashish.marketdata.avro.Order;
+import com.market.makers.account.OrderStatus;
 import com.market.makers.service.PriceRange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,7 @@ public class OrderCreator {
                     .setQuantity(qty)
                     .setLimitPrice(sendingPrice)
                     .setSide(random.nextInt(1, 3))
-                    .setOrderStatus("open")
+                    .setOrderStatus(OrderStatus.OPEN.name())
                     .setFilledQuantity(0l)
                     .setRemainingQuantity(qty)
                     .setOrdertime(Calendar.getInstance().getTimeInMillis())

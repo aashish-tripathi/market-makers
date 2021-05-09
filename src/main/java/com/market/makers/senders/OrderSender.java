@@ -34,13 +34,12 @@ public class OrderSender implements Runnable, ExceptionListener {
     private boolean kafka;
     private KafkaProducer<String, String> kafkaProducer;
     private Throughput throughput;
-    private BlockingQueue<Order> inputQueue;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderSender.class);
 
     public OrderSender(String serverUrl, String topic, String[] symbols, String exchange,
                        String brokerName, String brokerId, String clientId, String clientName,
-                       boolean kafka, Throughput throughputWorker, BlockingQueue<Order> inputQueue) throws JMSException {
+                       boolean kafka, Throughput throughputWorker) throws JMSException {
         this.kafka = kafka;
         this.topic = topic;
         this.symbols = symbols;
@@ -67,7 +66,6 @@ public class OrderSender implements Runnable, ExceptionListener {
             kafkaProducer = new KafkaBroker(serverUrl).createProducer((optionalProperties)); // create producer
         }
         this.throughput = throughputWorker;
-        this.inputQueue = inputQueue;
         LOGGER.info("Order sending started by client {} ", clientName);
     }
 
