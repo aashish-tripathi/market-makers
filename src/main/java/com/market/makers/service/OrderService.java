@@ -36,12 +36,12 @@ public class OrderService {
         });
     }
 
-    public void startSimulatorInAutomaticMode(final String[] symbols, final String exchange, final String brokerName, final String brokerId, final String clientId, final String clientName, int workers, boolean manualMode, BlockingQueue<Order> inputQueue) throws JMSException {
+    public void start(final String[] symbols, final String exchange, final String brokerName, final String brokerId, final String clientId, final String clientName, int workers, BlockingQueue<Order> inputQueue) throws JMSException {
         workerThreads = new ArrayList<>();
         for (int i = 0; i < workers; i++) {
             OrderSender senderEMS = new OrderSender(serverUrl, topic, symbols, exchange,
                     brokerName, brokerId, clientId, clientName,
-                    kafka,throughputWorker, manualMode, inputQueue);
+                    kafka,throughputWorker, inputQueue);
             workerThreads.add(senderEMS);
         }
         workerThreads.forEach(t -> service.submit(t));
@@ -53,14 +53,5 @@ public class OrderService {
         }
         service.shutdown();
         LOGGER.info("All threads has been shutdown!");
-    }
-    //TO DO
-    public void startSimulatorInManualMode(final String[] symbols, final String exchange, final String brokerName, final String brokerId, final String clientId, final String clientName, int workers, boolean manualMode,BlockingQueue<Order> inputQueue) throws JMSException {
-        workerThreads = new ArrayList<>();
-        for (int i = 0; i < workers; i++) {
-            OrderSender senderEMS = new OrderSender(serverUrl, topic, symbols, exchange, brokerName, brokerId, clientId, clientName, kafka,throughputWorker, manualMode, inputQueue);
-            workerThreads.add(senderEMS);
-        }
-        workerThreads.forEach(t -> service.submit(t));
     }
 }
