@@ -16,7 +16,7 @@ public class StartMarketMakers {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StartMarketMakers.class);
 
-    public static void main(String[] args) throws IOException, JMSException, InterruptedException {
+    public static void main(String[] args) throws IOException, JMSException {
         String configPath = null;
         if (args.length == 0) {
             LOGGER.warn("Config file not provided, loading file from default directory");
@@ -43,6 +43,7 @@ public class StartMarketMakers {
         Properties dbproperties = new Properties();
         InputStream dbInputStream = Cache.class.getResourceAsStream("/db.properties");
         dbproperties.load(dbInputStream);
+        Cache.getInstance().loadSecurityData(dbproperties);
 
         startMarketMakers(stocks, exchange, brokerName, brokerId, clientDetails, workers, new OrderService(serverUrl, orderTopic, kafkaAsCarrier));
     }

@@ -28,7 +28,7 @@ public class PriceRange {
 
          stockCircuit.put(symbol.getSecurityName(), new Circuit(price, price-5,price+5));
      }
-        return stockCircuit.get(symbol);
+        return stockCircuit.get(symbol.getSecurityName());
     }
 
     public static class Circuit{

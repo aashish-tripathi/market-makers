@@ -1,6 +1,7 @@
 package com.market.makers.state;
 
 import com.market.makers.StartMarketMakers;
+import com.market.makers.loaders.SecurityDataLoader;
 import com.market.makers.model.Security;
 
 import java.io.InputStream;
@@ -20,6 +21,10 @@ public class Cache {
 
     public static Cache getInstance() {
         return instance;
+    }
+
+    public void loadSecurityData(final Properties properties){
+        SecurityDataLoader.loadSecurityData(properties);
     }
 
     public void addSecurity(final Security security) {
