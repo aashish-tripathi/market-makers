@@ -1,4 +1,4 @@
-package com.market.makers.security;
+package com.market.makers.model;
 
 public enum SecurityType {
 

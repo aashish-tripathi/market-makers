@@ -1,6 +1,7 @@
 package com.market.makers;
 
 import com.market.makers.service.OrderService;
+import com.market.makers.state.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +38,12 @@ public class StartMarketMakers {
         String brokerId = properties.getProperty("exsim.order.sim.brokerId");
         String[] clientDetails = clients[0].split("-");
         int workers = Integer.parseInt(properties.getProperty("exsim.order.sim.workers"));
+
+        // load all securities
+        Properties dbproperties = new Properties();
+        InputStream dbInputStream = Cache.class.getResourceAsStream("/db.properties");
+        dbproperties.load(dbInputStream);
+
         startMarketMakers(stocks, exchange, brokerName, brokerId, clientDetails, workers, new OrderService(serverUrl, orderTopic, kafkaAsCarrier));
     }
 

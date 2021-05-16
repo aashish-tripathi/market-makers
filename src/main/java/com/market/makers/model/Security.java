@@ -1,13 +1,13 @@
-package com.market.makers.security;
+package com.market.makers.model;
 
 import java.util.Date;
 
-public class SecurityData {
+public class Security {
 
     private long securityId;
     private String securityName;
     private ProductType productType;
-    private double strikePrice;
+    private double preClose;
     private Date maturityDate;
     private String isinCode;
     private String bbCode;
@@ -16,14 +16,14 @@ public class SecurityData {
     private SecurityType securityType;
     private double adv;
 
-    public SecurityData() {
+    public Security() {
     }
 
-    public SecurityData(long securityId, String securityName, ProductType productType, double strikePrice, Date maturityDate, String isinCode, String bbCode, String ricCode, String securityDetails, SecurityType securityType, double adv) {
+    public Security(long securityId, String securityName, ProductType productType, double preClose, Date maturityDate, String isinCode, String bbCode, String ricCode, String securityDetails, SecurityType securityType, double adv) {
         this.securityId = securityId;
         this.securityName = securityName;
         this.productType = productType;
-        this.strikePrice = strikePrice;
+        this.preClose = preClose;
         this.maturityDate = maturityDate;
         this.isinCode = isinCode;
         this.bbCode = bbCode;
@@ -33,7 +33,7 @@ public class SecurityData {
         this.adv = adv;
     }
 
-    public SecurityData(double adv) {
+    public Security(double adv) {
         this.adv = adv;
     }
 
@@ -61,12 +61,12 @@ public class SecurityData {
         this.productType = productType;
     }
 
-    public double getStrikePrice() {
-        return strikePrice;
+    public double getPreClose() {
+        return preClose;
     }
 
-    public void setStrikePrice(double strikePrice) {
-        this.strikePrice = strikePrice;
+    public void setPreClose(double preClose) {
+        this.preClose = preClose;
     }
 
     public Date getMaturityDate() {

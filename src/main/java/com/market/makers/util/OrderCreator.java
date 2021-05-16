@@ -1,7 +1,8 @@
 package com.market.makers.util;
 
 import com.ashish.marketdata.avro.Order;
-import com.market.makers.portfolio.OrderStatus;
+import com.market.makers.model.Security;
+
 import com.market.makers.service.PriceRange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,14 +16,14 @@ public class OrderCreator {
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderCreator.class);
     private static PriceRange priceRange = PriceRange.getInstance();
 
-    public static Order createSingleOrder(final String symbol, final String exchange, final String brokerName, final String brokerId, final String clientId, final String clientName){
+    public static Order createSingleOrder(final Security symbol, final String exchange, final String brokerName, final String brokerId, final String clientId, final String clientName){
         Order order = null;
         ThreadLocalRandom random = ThreadLocalRandom.current();
         String orderId = "MARKET-MAKER"+ UUID.randomUUID().toString();
 
         PriceRange.Circuit circuit = priceRange.getTodaysSymbolCircuit(symbol);
         double price = circuit.getPriceRange();
-        final double sendingPrice = Double.valueOf(Utility.dataFormat.format(random.nextDouble(price, price + 5)));
+        final double sendingPrice = Double.valueOf(Utility.FORMAT.format(random.nextDouble(price, price + 5)));
         double lowerCircuit = circuit.getLowerCircuit();
         double upperCircuit = circuit.getUpperCircuit();
         if (sendingPrice >= lowerCircuit && sendingPrice <= upperCircuit && spreadValidity(sendingPrice)) {
@@ -36,7 +37,7 @@ public class OrderCreator {
                     .setQuantity(qty)
                     .setLimitPrice(sendingPrice)
                     .setSide(random.nextInt(1, 3))
-                    .setOrderStatus(OrderStatus.OPEN.name())
+                    .setOrderStatus("Open")
                     .setFilledQuantity(0l)
                     .setRemainingQuantity(qty)
                     .setOrdertime(Calendar.getInstance().getTimeInMillis())

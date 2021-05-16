@@ -1,12 +1,15 @@
 package com.market.makers.service;
 
+import com.market.makers.model.Security;
 import com.market.makers.senders.OrderSender;
+import com.market.makers.state.Cache;
 import com.market.makers.util.Throughput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.JMSException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,6 +24,7 @@ public class OrderService {
     private ExecutorService service;
     private List<OrderSender> workerThreads;
     private Throughput throughputWorker;
+    private Cache cache = Cache.getInstance();
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
 
     public OrderService(String serverUrl, final String topic, boolean kafka) {
@@ -37,8 +41,9 @@ public class OrderService {
 
     public void start(final String[] symbols, final String exchange, final String brokerName, final String brokerId, final String clientId, final String clientName, int workers) throws JMSException {
         workerThreads = new ArrayList<>();
+        Security[] securities = cache.getAllSecurities().toArray(new Security[0]);
         for (int i = 0; i < workers; i++) {
-            OrderSender senderEMS = new OrderSender(serverUrl, topic, symbols, exchange,
+            OrderSender senderEMS = new OrderSender(serverUrl, topic, securities, exchange,
                     brokerName, brokerId, clientId, clientName,
                     kafka,throughputWorker);
             workerThreads.add(senderEMS);
@@ -46,7 +51,7 @@ public class OrderService {
         AtomicInteger mm = new AtomicInteger();
         workerThreads.forEach(t -> {
             service.submit(t);
-            LOGGER.info("Market Maker {} started creating liquidity for market {} ", mm.incrementAndGet(),exchange);
+            LOGGER.info("Market Maker {} started to create liquidity for market {} ", mm.incrementAndGet(),exchange);
         });
     }
 

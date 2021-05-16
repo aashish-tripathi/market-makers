@@ -3,6 +3,7 @@ package com.market.makers.senders;
 import com.ashish.marketdata.avro.Order;
 import com.market.makers.broker.EMSBroker;
 import com.market.makers.broker.KafkaBroker;
+import com.market.makers.model.Security;
 import com.market.makers.service.PriceRange;
 import com.market.makers.util.OrderCreator;
 import com.market.makers.util.Throughput;
@@ -23,7 +24,7 @@ public class OrderSender implements Runnable, ExceptionListener {
 
     private volatile boolean running = true;
     final private String topic;
-    final private String[] symbols;
+    final private Security[] symbols;
     final private String exchange;
     final private String brokerName;
     final private String brokerId;
@@ -37,7 +38,7 @@ public class OrderSender implements Runnable, ExceptionListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderSender.class);
 
-    public OrderSender(String serverUrl, String topic, String[] symbols, String exchange,
+    public OrderSender(String serverUrl, String topic, Security[] symbols, String exchange,
                        String brokerName, String brokerId, String clientId, String clientName,
                        boolean kafka, Throughput throughputWorker) throws JMSException {
         this.kafka = kafka;
@@ -76,7 +77,7 @@ public class OrderSender implements Runnable, ExceptionListener {
         int msgCount = 0;
         while (isRunning()) {
             try {
-                String randomStock = symbols[localRandom.nextInt(symbols.length)];
+                Security randomStock = symbols[localRandom.nextInt(symbols.length)];
                 Order newOrder = OrderCreator.createSingleOrder(randomStock, exchange, brokerName, brokerId, clientId, clientName);
                 if (newOrder == null) {
                     continue;

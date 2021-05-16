@@ -13,7 +13,7 @@ import java.text.DecimalFormat;
 
 public class Utility {
 
-    public static DecimalFormat dataFormat = new DecimalFormat("####.#");
+    public static DecimalFormat FORMAT = new DecimalFormat("####.#");
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Utility.class);
 

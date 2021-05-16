@@ -1,5 +1,6 @@
 package com.market.makers.service;
 
+import com.market.makers.model.Security;
 import com.market.makers.util.Utility;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,12 +20,13 @@ public class PriceRange {
         return priceRange;
     }
 
-    public Circuit getTodaysSymbolCircuit(final String symbol){
+    public Circuit getTodaysSymbolCircuit(final Security symbol){
      if(!stockCircuit.containsKey(symbol)){
          ThreadLocalRandom random = ThreadLocalRandom.current();
-         double price =  random.nextDouble(50, 500);
-         price =Double.valueOf(Utility.dataFormat.format(price));
-         stockCircuit.put(symbol, new Circuit(price, price-5,price+5));
+         double price =  random.nextDouble(symbol.getPreClose(), symbol.getPreClose()+50);
+         price =Double.valueOf(Utility.FORMAT.format(price));
+
+         stockCircuit.put(symbol.getSecurityName(), new Circuit(price, price-5,price+5));
      }
         return stockCircuit.get(symbol);
     }
